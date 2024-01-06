@@ -1,11 +1,10 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 
 type AddItemFormPropsType = {
-  addTask: (title: string, todolistId: string) => void;
-  id: string;
+  addItem: (title: string) => void;
 };
 
-export function AddItemForm({ addTask, id }: AddItemFormPropsType) {
+export function AddItemForm({ addItem }: AddItemFormPropsType) {
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [error, setError] = useState('');
 
@@ -15,7 +14,7 @@ export function AddItemForm({ addTask, id }: AddItemFormPropsType) {
       setError('Field is required!');
       return;
     }
-    addTask(newTaskTitle, id);
+    addItem(newTaskTitle);
     setNewTaskTitle('');
   };
 

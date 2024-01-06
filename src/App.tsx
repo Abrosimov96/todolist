@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { v1 } from 'uuid';
+import { AddItemForm } from './AddItemFor';
 import './App.css';
-import { TaskType, Todolist } from './Todolist';
+import { Todolist } from './Todolist';
 
 type TodolistTpe = {
   id: string;
@@ -16,8 +17,8 @@ function App() {
   let todolistId2 = v1();
 
   let [todolists, setTodolists] = useState<Array<TodolistTpe>>([
-    { id: todolistId1, title: 'What to learn', filter: 'active' },
-    { id: todolistId2, title: 'What to buy', filter: 'complited' },
+    { id: todolistId1, title: 'What to learn', filter: 'all' },
+    { id: todolistId2, title: 'What to buy', filter: 'all' },
   ]);
 
   const [tasksObj, setTasksObj] = useState({
@@ -82,8 +83,15 @@ function App() {
     setTasksObj({ ...tasksObj });
   };
 
+  const addTodolist = (title: string) => {
+    let newTodolist: TodolistTpe = { id: v1(), title, filter: 'all' };
+    setTodolists([newTodolist, ...todolists]);
+    setTasksObj({ ...tasksObj, [newTodolist.id]: [] });
+  };
+
   return (
     <div className="App">
+      <AddItemForm addItem={addTodolist} />
       {todolists.map((todolist) => {
         let filteredTasks = tasksObj[todolist.id];
 

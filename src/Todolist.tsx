@@ -46,13 +46,17 @@ export function Todolist({
     removeList(todolistId);
   };
 
+  const addNewTask = (title: string) => {
+    addTask(title, id);
+  };
+
   return (
     <div>
       <h3>
         {title}
         <button onClick={() => onRemoveList(id)}>x</button>
       </h3>
-      <AddItemForm addTask={addTask} id={id} />
+      <AddItemForm addItem={addNewTask} />
       <ul>
         {tasks.map((task) => {
           const onRemoveHanlder = () => removeTask(task.id, id);
