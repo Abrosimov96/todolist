@@ -8,16 +8,27 @@ export type TaskType = {
 };
 
 type PropsType = {
+  id: string;
   title: string;
   tasks: TaskType[];
-  addTask: (title: string) => void;
-  removeTask: (id: string) => void;
-  changeFilter: (filter: FilterValuesType) => void;
-  changeTaskStatus: (id: string, isDone: boolean) => void;
+  addTask: (title: string, todolistId: string) => void;
+  removeTask: (id: string, todolistId: string) => void;
+  changeFilter: (
+    filter: FilterValuesType,
+    todolistId: string,
+  ) => void;
+  changeTaskStatus: (
+    id: string,
+    isDone: boolean,
+    todolistId: string,
+  ) => void;
+  removeList: (todolistId: string) => void;
   filter: FilterValuesType;
 };
 
 export function Todolist({
+  id,
+  removeList,
   title,
   tasks,
   addTask,
@@ -35,7 +46,7 @@ export function Todolist({
       setError('Field is required!');
       return;
     }
-    addTask(newTaskTitle);
+    addTask(newTaskTitle, id);
     setNewTaskTitle('');
   };
 
@@ -48,13 +59,20 @@ export function Todolist({
     e.code === 'Enter' && addNewTask();
   };
 
-  const onClickFilter = (filter: FilterValuesType) => {
-    changeFilter(filter);
+  const onClickFilter = (filter: FilterValuesType, id: string) => {
+    changeFilter(filter, id);
+  };
+
+  const onRemoveList = (todolistId: string) => {
+    removeList(todolistId);
   };
 
   return (
     <div>
-      <h3>{title}</h3>
+      <h3>
+        {title}
+        <button onClick={() => onRemoveList(id)}>x</button>
+      </h3>
       <div>
         <input
           type="text"
@@ -68,10 +86,10 @@ export function Todolist({
       </div>
       <ul>
         {tasks.map((task) => {
-          const onRemoveHanlder = () => removeTask(task.id);
+          const onRemoveHanlder = () => removeTask(task.id, id);
           const onChangeHanlder = (
             e: ChangeEvent<HTMLInputElement>,
-          ) => changeTaskStatus(task.id, e.target.checked);
+          ) => changeTaskStatus(task.id, e.target.checked, id);
           return (
             <li
               key={task.id}
@@ -90,17 +108,17 @@ export function Todolist({
       <div>
         <button
           className={filter === 'all' ? 'active-filter' : ''}
-          onClick={() => onClickFilter('all')}>
+          onClick={() => onClickFilter('all', id)}>
           All
         </button>
         <button
           className={filter === 'active' ? 'active-filter' : ''}
-          onClick={() => onClickFilter('active')}>
+          onClick={() => onClickFilter('active', id)}>
           Active
         </button>
         <button
           className={filter === 'complited' ? 'active-filter' : ''}
-          onClick={() => onClickFilter('complited')}>
+          onClick={() => onClickFilter('complited', id)}>
           Comleted
         </button>
       </div>
