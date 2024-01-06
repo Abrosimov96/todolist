@@ -13,6 +13,8 @@ type PropsType = {
   addTask: (title: string) => void;
   removeTask: (id: string) => void;
   changeFilter: (filter: FilterValuesType) => void;
+  changeTaskStatus: (id: string, isDone: boolean) => void;
+  filter: FilterValuesType;
 };
 
 export function Todolist({
@@ -21,11 +23,19 @@ export function Todolist({
   addTask,
   removeTask,
   changeFilter,
+  changeTaskStatus,
+  filter,
 }: PropsType) {
   const [newTaskTitle, setNewTaskTitle] = useState('');
+  const [error, setError] = useState('');
 
   const addNewTask = () => {
-    newTaskTitle && addTask(newTaskTitle);
+    if (newTaskTitle.trim() === '') {
+      setNewTaskTitle('');
+      setError('Field is required!');
+      return;
+    }
+    addTask(newTaskTitle);
     setNewTaskTitle('');
   };
 
@@ -34,6 +44,7 @@ export function Todolist({
   };
 
   const onKeyPressHadler = (e: KeyboardEvent<HTMLInputElement>) => {
+    setError('');
     e.code === 'Enter' && addNewTask();
   };
 
@@ -49,16 +60,27 @@ export function Todolist({
           type="text"
           value={newTaskTitle}
           onChange={onNewTitleHandler}
-          onKeyUp={onKeyPressHadler}
+          onKeyDown={onKeyPressHadler}
+          className={error ? 'error' : ''}
         />
         <button onClick={addNewTask}>+</button>
+        {error && <div className="error-message">{error}</div>}
       </div>
       <ul>
         {tasks.map((task) => {
           const onRemoveHanlder = () => removeTask(task.id);
+          const onChangeHanlder = (
+            e: ChangeEvent<HTMLInputElement>,
+          ) => changeTaskStatus(task.id, e.target.checked);
           return (
-            <li key={task.id}>
-              <input type="checkbox" checked={task.isDone} />
+            <li
+              key={task.id}
+              className={task.isDone ? 'is-done' : ''}>
+              <input
+                type="checkbox"
+                checked={task.isDone}
+                onChange={onChangeHanlder}
+              />
               <span>{task.title}</span>
               <button onClick={onRemoveHanlder}>x</button>
             </li>
@@ -66,11 +88,19 @@ export function Todolist({
         })}
       </ul>
       <div>
-        <button onClick={() => onClickFilter('all')}>All</button>
-        <button onClick={() => onClickFilter('active')}>
+        <button
+          className={filter === 'all' ? 'active-filter' : ''}
+          onClick={() => onClickFilter('all')}>
+          All
+        </button>
+        <button
+          className={filter === 'active' ? 'active-filter' : ''}
+          onClick={() => onClickFilter('active')}>
           Active
         </button>
-        <button onClick={() => onClickFilter('complited')}>
+        <button
+          className={filter === 'complited' ? 'active-filter' : ''}
+          onClick={() => onClickFilter('complited')}>
           Comleted
         </button>
       </div>
