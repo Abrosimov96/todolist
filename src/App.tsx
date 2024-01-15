@@ -15,7 +15,7 @@ import { AddItemForm } from './AddItemFor';
 import './App.css';
 import { TaskType, Todolist } from './Todolist';
 
-type TodolistTpe = {
+export type TodolistType = {
   id: string;
   title: string;
   filter: FilterValuesType;
@@ -31,7 +31,7 @@ function App() {
   let todolistId1 = v1();
   let todolistId2 = v1();
 
-  let [todolists, setTodolists] = useState<Array<TodolistTpe>>([
+  let [todolists, setTodolists] = useState<Array<TodolistType>>([
     { id: todolistId1, title: 'What to learn', filter: 'all' },
     { id: todolistId2, title: 'What to buy', filter: 'all' },
   ]);
@@ -99,7 +99,11 @@ function App() {
   };
 
   const addTodolist = (title: string) => {
-    let newTodolist: TodolistTpe = { id: v1(), title, filter: 'all' };
+    let newTodolist: TodolistType = {
+      id: v1(),
+      title,
+      filter: 'all',
+    };
     setTodolists([newTodolist, ...todolists]);
     setTasksObj({ ...tasksObj, [newTodolist.id]: [] });
   };
