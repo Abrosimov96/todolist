@@ -21,13 +21,13 @@ export type TodolistType = {
   filter: FilterValuesType;
 };
 
-export type TasksStateType = {
+type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
 
 export type FilterValuesType = 'all' | 'complited' | 'active';
 
-function App() {
+function AppWithReducers() {
   let todolistId1 = v1();
   let todolistId2 = v1();
 
@@ -188,4 +188,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppWithReducers;
