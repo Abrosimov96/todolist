@@ -75,7 +75,7 @@ test('correct filter of todolist should changed', () => {
   let todolistId1 = v1();
   let todolistId2 = v1();
 
-  const newFilter: FilterValuesType = 'complited';
+  const newFilter: FilterValuesType = 'completed';
 
   const startState: Array<TodolistType> = [
     { id: todolistId1, title: 'What to learn', filter: 'all' },
