@@ -1,23 +1,25 @@
 import axios from 'axios';
 
-const settings = {
-    withCredentials: true,
-    headers: {
-        'API-KEY': 'c86ec8cb-1eec-4043-b253-d88640c02776'
-    }
+export enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3
 }
 
-const instance = axios.create({
-    baseURL: 'https://social-network.samuraijs.com/api/1.1/todo-lists',
-    ...settings
-})
+export enum TaskPriorities {
+    Low = 0,
+    Middle = 1,
+    High = 2,
+    Urgently = 3,
+    Later = 4
+}
 
 export type TaskType = {
     description: string
     title: string
-    completed: boolean
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
     id: string
@@ -47,6 +49,17 @@ type ResponseType<Data = {}> = {
     data: Data
 }
 
+const settings = {
+    withCredentials: true,
+    headers: {
+        'API-KEY': 'c86ec8cb-1eec-4043-b253-d88640c02776'
+    }
+}
+
+const instance = axios.create({
+    baseURL: 'https://social-network.samuraijs.com/api/1.1/todo-lists',
+    ...settings
+})
 
 export const taskApi = {
     getTasks(todolistId: string) {

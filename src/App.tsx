@@ -3,22 +3,10 @@ import {Menu} from '@material-ui/icons';
 import React, {useCallback} from 'react';
 import {AddItemForm} from './components/AddItemForm/AddItemForm';
 import './App.css';
-import {TaskType, Todolist} from './components/Todolists/Todolist';
+import {Todolist} from './components/Todolists/Todolist';
 import {addTodolistAC} from './state/todolists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {todolistSelector} from './state/selectors/todolistSelector';
-
-export type TodolistType = {
-    id: string;
-    title: string;
-    filter: FilterValuesType;
-};
-
-export type TasksStateType = {
-    [key: string]: Array<TaskType>;
-};
-
-export type FilterValuesType = 'all' | 'completed' | 'active';
 
 function App() {
 
@@ -28,7 +16,6 @@ function App() {
     const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistAC(title))
     },[dispatch])
-
 
     return (
         <div className="App">

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {todolistsApi, TodolistType} from '../api/todolists-api';
+import {todolistsApi, TodolistTypeAPI} from '../api/todolists-api';
 
 export default {
     title: 'API_TODOLIST'
@@ -7,7 +7,7 @@ export default {
 
 
 export const GetTodolists = () => {
-    const [state, setState] = useState<TodolistType[]>([])
+    const [state, setState] = useState<TodolistTypeAPI[]>([])
     useEffect(() => {
         todolistsApi.getTodolists()
             .then(res => {

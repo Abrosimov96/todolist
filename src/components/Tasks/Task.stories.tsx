@@ -1,10 +1,7 @@
-import {action} from '@storybook/addon-actions';
-
-import type {Meta, StoryObj} from '@storybook/react';
+import type {Meta} from '@storybook/react';
 import {Task} from './Task';
-import {Provider} from 'react-redux';
-import {store} from '../../state/store';
 import {ReduxStoreProviderDecorator} from '../../stories/ReduxStoreProviderDecorator';
+import {TaskPriorities, TaskStatuses} from '../../api/task-api';
 
 const meta = {
     title: 'Task Component',
@@ -12,17 +9,14 @@ const meta = {
     decorators: [ReduxStoreProviderDecorator]
 } satisfies Meta<typeof Task>;
 
-
-type Story = StoryObj<typeof meta>;
-const callback = action('Button was pressed inside the form')
 export const TaskBaseExample = () => {
     return <>
         <Task
-            task={{id: '1', isDone: true, title: 'CSS'}}
+            task={{ id: '3', title: 'React', status: TaskStatuses.New, priority: TaskPriorities.Low, description: '', order: 0, deadline: '', startDate: '', addedDate: '', todoListId: 'todolistId1'}}
             todolistId={'1'}
         />
         <Task
-            task={{id: '2', isDone: false, title: 'HTML'}}
+            task={{ id: '3', title: 'React', status: TaskStatuses.New, priority: TaskPriorities.Low, description: '', order: 0, deadline: '', startDate: '', addedDate: '', todoListId: 'todolistId1'  }}
             todolistId={'1'}
         />
     </>
