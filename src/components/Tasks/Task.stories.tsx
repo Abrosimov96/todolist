@@ -16,7 +16,7 @@ export const TaskBaseExample = () => {
             todolistId={'1'}
         />
         <Task
-            task={{ id: '3', title: 'React', status: TaskStatuses.New, priority: TaskPriorities.Low, description: '', order: 0, deadline: '', startDate: '', addedDate: '', todoListId: 'todolistId1'  }}
+            task={{ id: '3', title: 'React', status: TaskStatuses.Completed, priority: TaskPriorities.Low, description: '', order: 0, deadline: '', startDate: '', addedDate: '', todoListId: 'todolistId1'  }}
             todolistId={'1'}
         />
     </>

@@ -1,16 +1,16 @@
 import {Button, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
-import {memo, useCallback, useMemo} from 'react';
+import {memo, useCallback, useEffect, useMemo} from 'react';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppStoreType} from '../../state/store';
-import {addTaskAC} from '../../state/tasks-reducer';
+import {useSelector} from 'react-redux';
+import {AppRootStateType, useAppDispatch} from '../../state/store';
+import {addTaskTC, fetchTasksTC} from '../../state/tasks-reducer';
 import {
     changeFilterTodolistAC,
-    changeTitleTodolistAC,
+    changeTodolistTitleTC,
     FilterValuesType,
-    removeTodolistAC,
+    removeTodolistTC,
     TodolistType
 } from '../../state/todolists-reducer';
 import {Task} from '../Tasks/Task';
@@ -24,12 +24,16 @@ export const Todolist = memo(({todolist}: PropsType) => {
     console.log('TODOLIST')
     const { id, title, filter} = todolist
 
-    const dispatch = useDispatch()
-    const tasks = useSelector<AppStoreType, TaskType[]>(store => store.tasks[id])
+    const dispatch = useAppDispatch()
+    const tasks = useSelector<AppRootStateType, TaskType[]>(store => store.tasks[id])
+
+    useEffect(() => {
+        dispatch(fetchTasksTC(id))
+    }, [dispatch, id]);
 
 
     const addTask = useCallback((title: string) => {
-        dispatch(addTaskAC(title, id))
+        dispatch(addTaskTC(id,title))
     }, [dispatch, id]);
 
     const onClickFilter = useCallback((filter: FilterValuesType) => {
@@ -37,11 +41,11 @@ export const Todolist = memo(({todolist}: PropsType) => {
     },[dispatch, id]);
 
     const removeTodolist = useCallback(() => {
-        dispatch(removeTodolistAC(id))
+        dispatch(removeTodolistTC(id))
     },[dispatch, id]);
 
     const onChangeTodolistTitleHandler = useCallback((newTitle: string) => {
-        dispatch(changeTitleTodolistAC(id, newTitle));
+        dispatch(changeTodolistTitleTC(id, newTitle));
     }, [dispatch, id]);
 
     let filteredTasks: TaskType[];

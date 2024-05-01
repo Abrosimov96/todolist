@@ -1,20 +1,25 @@
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography,} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {AddItemForm} from './components/AddItemForm/AddItemForm';
 import './App.css';
 import {Todolist} from './components/Todolists/Todolist';
-import {addTodolistAC} from './state/todolists-reducer';
-import {useDispatch, useSelector} from 'react-redux';
+import {addTodolistTC, fetchTodolistsTC} from './state/todolists-reducer';
+import {useSelector} from 'react-redux';
 import {todolistSelector} from './state/selectors/todolistSelector';
+import {useAppDispatch} from './state/store';
 
 function App() {
 
-    const dispatch = useDispatch()
+    const dispatch= useAppDispatch();
     const todolists = useSelector(todolistSelector)
 
+    useEffect(() => {
+        dispatch(fetchTodolistsTC())
+    }, [dispatch]);
+
     const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistAC(title))
+        dispatch(addTodolistTC(title))
     },[dispatch])
 
     return (
