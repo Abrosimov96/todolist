@@ -1,4 +1,4 @@
-import {IconButton, TextField} from '@material-ui/core';
+import {Grid, IconButton, TextField} from '@material-ui/core';
 import {ControlPoint} from '@material-ui/icons';
 import {memo} from 'react';
 import {useAddItemForm} from './hooks/useAddItemForm';
@@ -17,7 +17,7 @@ export const AddItemForm = memo(({addItem}: AddItemFormPropsType) => {
       onKeyPressHandler
     } = useAddItemForm(addItem)
     return (
-        <div>
+        <Grid container style={{padding: '20px'}}>
             <TextField
                 variant="outlined"
                 label="Type value"
@@ -31,6 +31,6 @@ export const AddItemForm = memo(({addItem}: AddItemFormPropsType) => {
             <IconButton onClick={addNewTask} color="primary">
                 <ControlPoint/>
             </IconButton>
-        </div>
+        </Grid>
     );
 })

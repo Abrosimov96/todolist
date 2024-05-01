@@ -2,7 +2,7 @@ import {action} from '@storybook/addon-actions';
 
 import type {Meta, StoryObj} from '@storybook/react';
 import App from './App';
-import {ReduxStoreProviderDecorator} from './stories/ReduxStoreProviderDecorator';
+import {ReduxStoreProviderDecorator} from '../stories/ReduxStoreProviderDecorator';
 
 const meta = {
     title: 'App Component',

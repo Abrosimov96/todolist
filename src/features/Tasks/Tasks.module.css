@@ -1,0 +1,13 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.isDone{
+    text-decoration: line-through;
+}
+
+.container:last-child{
+    margin-bottom: 20px;
+}
