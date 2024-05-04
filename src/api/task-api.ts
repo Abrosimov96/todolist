@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {RequestStatusType} from '../state/app-reducer';
 
 // --------- SETTINGS AXIOS ---------
 const settings = {
@@ -53,6 +54,7 @@ export type TaskType = {
     todoListId: string
     order: number
     addedDate: string
+    entityStatus: RequestStatusType
 }
 type GetResponseType = {
     error: string | null

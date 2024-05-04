@@ -12,11 +12,24 @@ const meta = {
 export const TaskBaseExample = () => {
     return <>
         <Task
-            task={{ id: '3', title: 'React', status: TaskStatuses.New, priority: TaskPriorities.Low, description: '', order: 0, deadline: '', startDate: '', addedDate: '', todoListId: 'todolistId1'}}
+            task={{ id: '3', title: 'React', status: TaskStatuses.New, priority: TaskPriorities.Low, description: '', order: 0, deadline: '', startDate: '', addedDate: '', todoListId: 'todolistId1', entityStatus: 'idle'}}
             todolistId={'1'}
         />
         <Task
-            task={{ id: '3', title: 'React', status: TaskStatuses.Completed, priority: TaskPriorities.Low, description: '', order: 0, deadline: '', startDate: '', addedDate: '', todoListId: 'todolistId1'  }}
+            task={{ id: '3', title: 'React', status: TaskStatuses.Completed, priority: TaskPriorities.Low, description: '', order: 0, deadline: '', startDate: '', addedDate: '', todoListId: 'todolistId1', entityStatus: 'idle'  }}
+            todolistId={'1'}
+        />
+    </>
+}
+
+export const TaskDisabled = () => {
+    return <>
+        <Task
+            task={{ id: '3', title: 'React', status: TaskStatuses.New, priority: TaskPriorities.Low, description: '', order: 0, deadline: '', startDate: '', addedDate: '', todoListId: 'todolistId1', entityStatus: 'loading'}}
+            todolistId={'1'}
+        />
+        <Task
+            task={{ id: '3', title: 'React', status: TaskStatuses.Completed, priority: TaskPriorities.Low, description: '', order: 0, deadline: '', startDate: '', addedDate: '', todoListId: 'todolistId1', entityStatus: 'idle'  }}
             todolistId={'1'}
         />
     </>

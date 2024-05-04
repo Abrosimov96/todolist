@@ -1,7 +1,7 @@
 import {taskApi, TaskType, UpdateTaskModelType} from '../api/task-api';
 import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType,} from './todolists-reducer';
 import {AppRootStateType, RootDispatchActionType} from './store';
-import {setAppStatusAC} from './app-reducer';
+import {RequestStatusType, setAppStatusAC} from './app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 
 const initialState: TasksStateType = {}
@@ -43,23 +43,33 @@ export const tasksReducer = (state: TasksStateType = initialState, action: TaskA
                 [action.todolistId]: action.tasks
             }
         }
+        case 'CHANGE-TASKS-STATUS': {
+            return {
+                ...state,
+                [action.todolistId]: state[action.todolistId]
+                    .map(task => task.id === action.taskId ? {...task, entityStatus: action.status} : task)
+            }
+        }
         default:
             return state
     }
 };
 
 // --------- ACTION CREATORS ---------
-export const removeTaskAC = (taskId: string, todolistId: string,) => {
+export const removeTaskAC = (taskId: string, todolistId: string) => {
     return {type: 'REMOVE-TASK', todolistId, taskId} as const;
 };
 export const addTaskAC = (task: TaskType) => {
     return {type: 'ADD-TASK', task} as const;
 };
-export const updateTaskAC = (taskId: string, model: Partial<UpdateTaskModelType>, todolistId: string,) => {
+export const updateTaskAC = (taskId: string, model: Partial<UpdateTaskModelType>, todolistId: string) => {
     return {type: 'UPDATE-TASK', taskId, model, todolistId} as const;
 };
 export const setTasksAC = (todolistId: string, tasks: TaskType[]) => {
     return {type: 'SET-TASKS', todolistId, tasks} as const;
+};
+export const changeTasksStatusAC = (todolistId: string, taskId: string, status: RequestStatusType) => {
+    return {type: 'CHANGE-TASKS-STATUS', todolistId, taskId, status} as const;
 };
 
 // --------- THUNK CREATORS ---------
@@ -76,13 +86,16 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: RootDispatchActio
 }
 export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: RootDispatchActionType) => {
     dispatch(setAppStatusAC('loading'))
+    dispatch(changeTasksStatusAC(todolistId, taskId, 'loading'))
     taskApi.deleteTask(todolistId, taskId)
         .then(() => {
             dispatch(removeTaskAC(taskId, todolistId))
             dispatch(setAppStatusAC('succeeded'))
+            dispatch(changeTasksStatusAC(todolistId, taskId, 'succeeded'))
         })
         .catch((error) => {
             handleServerNetworkError(error, dispatch)
+            dispatch(changeTasksStatusAC(todolistId, taskId, 'failed'))
         })
 }
 export const addTaskTC = (todolistId: string, title: string) => (dispatch: RootDispatchActionType) => {
@@ -103,6 +116,7 @@ export const addTaskTC = (todolistId: string, title: string) => (dispatch: RootD
 export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Partial<UpdateTaskModelType>) =>
     (dispatch: RootDispatchActionType, getState: () => AppRootStateType) => {
         dispatch(setAppStatusAC('loading'))
+        dispatch(changeTasksStatusAC(todolistId, taskId, 'loading'))
         const task = getState().tasks[todolistId].find(t => t.id === taskId)
         if (!task) {
             console.warn('task not found in the state')
@@ -122,6 +136,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Pa
                 if (!res.data.resultCode) {
                     dispatch(updateTaskAC(taskId, apiModel, todolistId))
                     dispatch(setAppStatusAC('succeeded'))
+                    dispatch(changeTasksStatusAC(todolistId, taskId, 'succeeded'))
                 } else {
                     handleServerAppError(res.data, dispatch)
                 }
@@ -139,7 +154,8 @@ export type TaskActionsType =
     | AddTodolistActionType
     | RemoveTodolistActionType
     | SetTodolistsActionType
-    | ReturnType<typeof setTasksAC>;
+    | ReturnType<typeof setTasksAC>
+    | ReturnType<typeof changeTasksStatusAC>
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>;

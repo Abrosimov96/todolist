@@ -16,19 +16,22 @@ export const Task = memo(({todolistId, task}: TaskProps) => {
         onChangeStatusHandler,
         onChangeTitleHandler
     } = useTask(todolistId, task.id)
+    const isLoading = task.entityStatus === 'loading'
 
     return <div className={s.container}>
         <div className={task.status === TaskStatuses.Completed ? s.isDone : ''}>
             <Checkbox
+                disabled={isLoading}
                 checked={task.status === TaskStatuses.Completed}
                 onChange={onChangeStatusHandler}
             />
             <EditableSpan
+                disabled={isLoading}
                 title={task.title}
                 onChange={onChangeTitleHandler}
             />
         </div>
-        <IconButton onClick={onRemoveHandler}>
+        <IconButton onClick={onRemoveHandler} disabled={isLoading}>
             <Delete/>
         </IconButton>
     </div>
