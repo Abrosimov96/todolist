@@ -11,7 +11,7 @@ export const useTask = (todolistId: string, id: string) => {
     };
 
     const onChangeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(updateTaskTC(todolistId, id, e.target.checked ? {status: TaskStatuses.Completed} : {status: TaskStatuses.New}, ))
+        dispatch(updateTaskTC(todolistId, id, e.target.checked ? {status: TaskStatuses.Completed} : {status: TaskStatuses.New} ))
     }, [dispatch, id, todolistId]);
 
     const onChangeTitleHandler = (title: string) => {

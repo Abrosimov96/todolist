@@ -1,5 +1,5 @@
-import {Button, Grid, IconButton, Paper,} from '@material-ui/core';
-import {Delete} from '@material-ui/icons';
+import {Button, Grid, IconButton, Paper,} from '@mui/material';
+import {Delete} from '@mui/icons-material';
 import {memo, useCallback, useEffect, useMemo} from 'react';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../components/EditableSpan/EditableSpan';
@@ -7,7 +7,7 @@ import {useSelector} from 'react-redux';
 import {AppRootStateType, useAppDispatch} from '../../state/store';
 import {addTaskTC, fetchTasksTC} from '../../state/tasks-reducer';
 import {
-    changeFilterTodolistAC,
+    changeTodolistFilterAC,
     changeTodolistTitleTC,
     FilterValuesType,
     removeTodolistTC,
@@ -18,18 +18,21 @@ import {TaskStatuses, TaskType} from '../../api/task-api';
 
 type PropsType = {
     todolist: TodolistType
+    demo?: boolean
 };
 
-export const Todolist = memo(({todolist}: PropsType) => {
-    console.log('TODOLIST')
-    const {id, title, filter} = todolist
+export const Todolist = memo(({todolist, demo = false}: PropsType) => {
+    const {id, title, filter, entityStatus} = todolist
+    const isLoading = entityStatus === 'loading'
 
     const dispatch = useAppDispatch()
     const tasks = useSelector<AppRootStateType, TaskType[]>(store => store.tasks[id])
 
     useEffect(() => {
-        dispatch(fetchTasksTC(id))
-    }, [dispatch, id]);
+        if (!demo) {
+            dispatch(fetchTasksTC(id))
+        }
+    }, [dispatch, id, demo]);
 
 
     const addTask = useCallback((title: string) => {
@@ -37,7 +40,7 @@ export const Todolist = memo(({todolist}: PropsType) => {
     }, [dispatch, id]);
 
     const onClickFilter = useCallback((filter: FilterValuesType) => {
-        dispatch(changeFilterTodolistAC(id, filter));
+        dispatch(changeTodolistFilterAC(id, filter));
     }, [dispatch, id]);
 
     const removeTodolist = useCallback(() => {
@@ -68,12 +71,13 @@ export const Todolist = memo(({todolist}: PropsType) => {
                         <EditableSpan
                             title={title}
                             onChange={onChangeTodolistTitleHandler}
+                            disabled={isLoading}
                         />
-                        <IconButton onClick={removeTodolist}>
+                        <IconButton onClick={removeTodolist} disabled={isLoading}>
                             <Delete/>
                         </IconButton>
                     </h3>
-                    <AddItemForm addItem={addTask}/>
+                    <AddItemForm addItem={addTask} disabled={isLoading}/>
                     <div>
                         {
                             filteredTasks.length > 0

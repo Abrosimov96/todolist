@@ -1,14 +1,14 @@
-import {Grid, IconButton, TextField} from '@material-ui/core';
-import {ControlPoint} from '@material-ui/icons';
+import {Grid, IconButton, TextField} from '@mui/material';
+import {ControlPoint} from '@mui/icons-material';
 import {memo} from 'react';
 import {useAddItemForm} from './hooks/useAddItemForm';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void;
+    disabled?: boolean
 };
 
-export const AddItemForm = memo(({addItem}: AddItemFormPropsType) => {
-    console.log('ADD_TASK')
+export const AddItemForm = memo(({addItem, disabled = false}: AddItemFormPropsType) => {
     const {
       newTaskTitle,
       error,
@@ -27,8 +27,9 @@ export const AddItemForm = memo(({addItem}: AddItemFormPropsType) => {
                 onKeyDown={onKeyPressHandler}
                 error={!!error}
                 helperText={error}
+                disabled={disabled}
             />
-            <IconButton onClick={addNewTask} color="primary">
+            <IconButton onClick={addNewTask} disabled={disabled} color="primary">
                 <ControlPoint/>
             </IconButton>
         </Grid>

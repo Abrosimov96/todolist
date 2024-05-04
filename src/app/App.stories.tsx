@@ -14,7 +14,7 @@ const meta = {
 type Story = StoryObj<typeof meta>;
 const callback = action('Title was changed')
 export const AppBaseExample = () => {
-    return <App />
+    return <App demo={true} />
 }
 
 export default meta;

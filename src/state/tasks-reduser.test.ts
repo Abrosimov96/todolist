@@ -59,7 +59,7 @@ test('status of specifie task should be changed', () => {
 });
 
 test('title of specifie task should be changed', () => {
-  const action = updateTaskAC('2', {title: 'juice',}, 'todolistId2');
+  const action = updateTaskAC('2', {title: 'juice'}, 'todolistId2');
 
   const endState = tasksReducer(startState, action);
 
@@ -126,5 +126,4 @@ test('tasks should be added for todolist', () => {
   expect(endState['todolistId3'].length).toBe(2)
   expect(endState['todolistId3'][0].title).toBe('REACT')
   expect(endState['todolistId3'][1].title).toBe('REDUX')
-  // expect(endState['2']).toBeDefined()
 });

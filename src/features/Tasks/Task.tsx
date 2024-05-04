@@ -1,7 +1,7 @@
 import {memo} from 'react';
-import {Checkbox, IconButton} from '@material-ui/core';
+import {Checkbox, IconButton} from '@mui/material';
 import {EditableSpan} from '../../components/EditableSpan/EditableSpan';
-import {Delete} from '@material-ui/icons';
+import {Delete} from '@mui/icons-material';
 import {useTask} from './hooks/useTask';
 import {TaskStatuses, TaskType} from '../../api/task-api';
 import s from './Tasks.module.css'
@@ -11,7 +11,6 @@ type TaskProps = {
     task: TaskType
 };
 export const Task = memo(({todolistId, task}: TaskProps) => {
-    console.log('TASK')
     const {
         onRemoveHandler,
         onChangeStatusHandler,

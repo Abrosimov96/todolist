@@ -15,4 +15,8 @@ export const AddItemFormBaseExample = () => {
     return <AddItemForm addItem={callback}/>
 }
 
+export const AddItemFormDisabled = () => {
+    return <AddItemForm addItem={callback} disabled/>
+}
+
 export default meta;

@@ -69,6 +69,6 @@ export type UpdateTaskModelType = {
 }
 type ResponseType<Data = {}> = {
     resultCode: number,
-    message: string[],
+    messages: string[],
     data: Data
 }

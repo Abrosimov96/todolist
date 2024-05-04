@@ -15,4 +15,8 @@ export const EditableSpanBaseExample = () => {
     return <EditableSpan title={'CSS'} onChange={callback}/>
 }
 
+export const EditableSpanDisabled = () => {
+    return <EditableSpan title={'CSS'} onChange={callback} disabled/>
+}
+
 export default meta;

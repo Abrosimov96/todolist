@@ -35,8 +35,8 @@ export type TodolistTypeAPI = {
     order: number
     title: string
 }
-type ResponseType<Data = {}> = {
+export type ResponseType<Data = {}> = {
     resultCode: number,
-    message: string[],
+    messages: string[],
     data: Data
 }
