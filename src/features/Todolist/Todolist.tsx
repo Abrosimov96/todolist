@@ -3,15 +3,13 @@ import {Delete} from '@mui/icons-material';
 import {memo, useCallback, useEffect, useMemo} from 'react';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../components/EditableSpan/EditableSpan';
-import {useSelector} from 'react-redux';
-import {AppRootStateType, useAppDispatch} from '../../state/store';
+import {useAppDispatch, useAppSelector} from '../../state/store';
 import {addTaskTC, fetchTasksTC} from '../../state/tasks-reducer';
 import {
-    changeTodolistFilterAC,
     changeTodolistTitleTC,
     FilterValuesType,
     removeTodolistTC,
-    TodolistType
+    TodolistType, updateTodolistAC
 } from '../../state/todolists-reducer';
 import {Task} from '../Tasks/Task';
 import {TaskStatuses, TaskType} from '../../api/task-api';
@@ -26,7 +24,7 @@ export const Todolist = memo(({todolist, demo = false}: PropsType) => {
     const isLoading = entityStatus === 'loading'
 
     const dispatch = useAppDispatch()
-    const tasks = useSelector<AppRootStateType, TaskType[]>(store => store.tasks[id])
+    const tasks = useAppSelector<TaskType[]>(store => store.tasks[id])
 
     useEffect(() => {
         if (!demo) {
@@ -40,7 +38,7 @@ export const Todolist = memo(({todolist, demo = false}: PropsType) => {
     }, [dispatch, id]);
 
     const onClickFilter = useCallback((filter: FilterValuesType) => {
-        dispatch(changeTodolistFilterAC(id, filter));
+        dispatch(updateTodolistAC(id, {filter}));
     }, [dispatch, id]);
 
     const removeTodolist = useCallback(() => {

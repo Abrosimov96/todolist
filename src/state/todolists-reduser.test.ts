@@ -1,12 +1,10 @@
 import {
   addTodolistAC,
-  changeTodolistFilterAC, changeTodolistStatusAC,
-  changeTodolistTitleAC,
   FilterValuesType,
   removeTodolistAC,
   setTodolistsAC,
   todolistsReducer,
-  TodolistType,
+  TodolistType, updateTodolistAC,
 } from './todolists-reducer';
 import {RequestStatusType} from './app-reducer';
 
@@ -39,26 +37,26 @@ test('correct todolist should be added', () => {
 });
 
 test('correct todolist should change its name', () => {
-  const newTodolistTitle = 'New Todolist';
+  const newTodolistTitle = {title: 'New Todolist'};
 
   const endState = todolistsReducer(
     startState,
-    changeTodolistTitleAC('todolistId2', newTodolistTitle),
+    updateTodolistAC('todolistId2', newTodolistTitle),
   );
 
   expect(endState[0].title).toBe('What to learn');
-  expect(endState[1].title).toBe(newTodolistTitle);
+  expect(endState[1].title).toBe(newTodolistTitle.title);
 });
 
 test('correct filter of todolist should changed', () => {
-  const newFilter: FilterValuesType = 'completed';
+  const newFilter: Partial<TodolistType> = {filter: 'completed'};
 
-  const action = changeTodolistFilterAC('todolistId2', newFilter);
+  const action = updateTodolistAC('todolistId2', newFilter);
 
   const endState = todolistsReducer(startState, action);
 
   expect(endState[0].filter).toBe('all');
-  expect(endState[1].filter).toBe(newFilter);
+  expect(endState[1].filter).toBe(newFilter.filter);
 });
 
 test('todolists should be set to the state', () => {
@@ -70,12 +68,28 @@ test('todolists should be set to the state', () => {
 });
 
 test('correct status of todolist should changed', () => {
-  const newStatus: RequestStatusType = 'loading';
+  const newStatus: Partial<TodolistType> = {entityStatus: 'loading'};
 
-  const action = changeTodolistStatusAC('todolistId2', newStatus);
+  const action = updateTodolistAC('todolistId2', newStatus);
 
   const endState = todolistsReducer(startState, action);
 
   expect(endState[0].entityStatus).toBe('idle');
-  expect(endState[1].entityStatus).toBe(newStatus);
+  expect(endState[1].entityStatus).toBe(newStatus.entityStatus);
+});
+
+test('correct todolist should be updated', () => {
+  const newUpdate: Partial<TodolistType> = {
+    title: 'Juice',
+    entityStatus: 'loading',
+    filter: 'completed'
+  };
+
+  const action = updateTodolistAC('todolistId2', newUpdate);
+
+  const endState = todolistsReducer(startState, action);
+
+  expect(endState[1].entityStatus).toBe(newUpdate.entityStatus);
+  expect(endState[1].filter).toBe(newUpdate.filter);
+  expect(endState[1].title).toBe(newUpdate.title);
 });
