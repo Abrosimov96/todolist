@@ -24,7 +24,7 @@ export const Todolist = memo(({todolist, demo = false}: PropsType) => {
     const isLoading = entityStatus === 'loading'
 
     const dispatch = useAppDispatch()
-    const tasks = useAppSelector<TaskType[]>(store => store.tasks[id])
+    const tasks = useAppSelector(store => store.tasks[id])
 
     useEffect(() => {
         if (!demo) {

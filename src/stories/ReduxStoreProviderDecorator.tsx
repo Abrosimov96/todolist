@@ -1,5 +1,5 @@
 import {Provider} from 'react-redux';
-import {AppRootStateType} from '../state/store';
+import {AppRootStateType, store} from '../state/store';
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
 import {tasksReducer} from '../state/tasks-reducer';
 import {todolistsReducer} from '../state/todolists-reducer';
@@ -7,11 +7,13 @@ import {v1} from 'uuid';
 import {TaskPriorities, TaskStatuses} from '../api/task-api';
 import {appReducer} from '../state/app-reducer';
 import thunk from 'redux-thunk';
+import {authReducer} from '../state/auth-reducer';
 
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer,
+    auth: authReducer,
     app: appReducer
 })
 
@@ -23,20 +25,96 @@ const initialState: AppRootStateType = {
     tasks: {
         todolistId1:
             [
-                {id: v1(), title: 'CSS', status: TaskStatuses.Completed, todoListId: 'todolistId1', startDate: '', addedDate: '', deadline: '', order: 0, description: '', priority: TaskPriorities.High , entityStatus: 'idle'},
-                {id: v1(), title: 'JS', status: TaskStatuses.Completed, todoListId: 'todolistId1', startDate: '', addedDate: '', deadline: '', order: 0, description: '', priority: TaskPriorities.High, entityStatus: 'idle'},
-                {id: v1(), title: 'React', status: TaskStatuses.Completed, todoListId: 'todolistId1', startDate: '', addedDate: '', deadline: '', order: 0, description: '', priority: TaskPriorities.High, entityStatus: 'idle'},
-                {id: v1(), title: 'TypeScript', status: TaskStatuses.Completed, todoListId: 'todolistId1', startDate: '', addedDate: '', deadline: '', order: 0, description: '', priority: TaskPriorities.High, entityStatus: 'idle'},
+                {
+                    id: v1(),
+                    title: 'CSS',
+                    status: TaskStatuses.Completed,
+                    todoListId: 'todolistId1',
+                    startDate: '',
+                    addedDate: '',
+                    deadline: '',
+                    order: 0,
+                    description: '',
+                    priority: TaskPriorities.High,
+                    entityStatus: 'idle'
+                },
+                {
+                    id: v1(),
+                    title: 'JS',
+                    status: TaskStatuses.Completed,
+                    todoListId: 'todolistId1',
+                    startDate: '',
+                    addedDate: '',
+                    deadline: '',
+                    order: 0,
+                    description: '',
+                    priority: TaskPriorities.High,
+                    entityStatus: 'idle'
+                },
+                {
+                    id: v1(),
+                    title: 'React',
+                    status: TaskStatuses.Completed,
+                    todoListId: 'todolistId1',
+                    startDate: '',
+                    addedDate: '',
+                    deadline: '',
+                    order: 0,
+                    description: '',
+                    priority: TaskPriorities.High,
+                    entityStatus: 'idle'
+                },
+                {
+                    id: v1(),
+                    title: 'TypeScript',
+                    status: TaskStatuses.Completed,
+                    todoListId: 'todolistId1',
+                    startDate: '',
+                    addedDate: '',
+                    deadline: '',
+                    order: 0,
+                    description: '',
+                    priority: TaskPriorities.High,
+                    entityStatus: 'idle'
+                },
             ],
         todolistId2:
             [
-                {id: v1(), title: 'Book', status: TaskStatuses.Completed, todoListId: 'todolistId2', startDate: '', addedDate: '', deadline: '', order: 0, description: '', priority: TaskPriorities.High, entityStatus: 'idle'},
-                 {id: v1(), title: 'Milk', status: TaskStatuses.Completed, todoListId: 'todolistId2', startDate: '', addedDate: '', deadline: '', order: 0, description: '', priority: TaskPriorities.High, entityStatus: 'idle'},
+                {
+                    id: v1(),
+                    title: 'Book',
+                    status: TaskStatuses.Completed,
+                    todoListId: 'todolistId2',
+                    startDate: '',
+                    addedDate: '',
+                    deadline: '',
+                    order: 0,
+                    description: '',
+                    priority: TaskPriorities.High,
+                    entityStatus: 'idle'
+                },
+                {
+                    id: v1(),
+                    title: 'Milk',
+                    status: TaskStatuses.Completed,
+                    todoListId: 'todolistId2',
+                    startDate: '',
+                    addedDate: '',
+                    deadline: '',
+                    order: 0,
+                    description: '',
+                    priority: TaskPriorities.High,
+                    entityStatus: 'idle'
+                },
             ],
+    },
+    auth: {
+        isLoggedIn: true,
     },
     app: {
         status: 'idle',
-        error: null
+        error: null,
+        isInitialized: false
     }
 }
 
@@ -44,7 +122,9 @@ const initialState: AppRootStateType = {
 export const storyBookStore = legacy_createStore(rootReducer, initialState, applyMiddleware(thunk))
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => {
-    return <Provider store={storyBookStore}>
+    return <Provider store={store}>
         {storyFn()}
     </Provider>
 }
+//@ts-ignore
+window.BStore = storyBookStore

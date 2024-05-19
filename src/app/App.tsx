@@ -1,14 +1,11 @@
-import {Container, Grid} from '@mui/material';
-import React, {useCallback, useEffect} from 'react';
-import {AddItemForm} from '../components/AddItemForm/AddItemForm';
+import {CircularProgress, Container} from '@mui/material';
+import React, {useEffect} from 'react';
 import './App.css';
-import {Todolist} from '../features/Todolist/Todolist';
-import {addTodolistTC, fetchTodolistsTC} from '../state/todolists-reducer';
-import {useSelector} from 'react-redux';
-import {todolistSelector} from '../state/selectors/todolistSelector';
-import {useAppDispatch} from '../state/store';
+import {useAppDispatch, useAppSelector} from '../state/store';
 import {Header} from '../components/Header/Header';
 import {ErrorSnackbar} from '../components/ErrorSnacknar/ErrorSnackbar';
+import {Outlet} from 'react-router-dom';
+import {initializeAppTC} from '../state/app-reducer';
 
 type AppProps = {
     demo?: boolean
@@ -16,36 +13,27 @@ type AppProps = {
 
 function App({demo = false} : AppProps) {
 
-    const dispatch = useAppDispatch();
-    const todolists = useSelector(todolistSelector)
+    const isInitialized = useAppSelector(state => state.app.isInitialized)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (!demo){
-            dispatch(fetchTodolistsTC())
-        }
-    }, [dispatch, demo]);
-
-    const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistTC(title))
+        dispatch(initializeAppTC())
     }, [dispatch])
+
+    if (!isInitialized) {
+        return (
+            <div style={{ position: 'fixed', top: '30%', textAlign: 'center', width: '100%' }}>
+                <CircularProgress />
+            </div>
+        )
+    }
 
     return (
         <div className="App">
             <Header/>
             <ErrorSnackbar />
             <Container fixed>
-                <AddItemForm addItem={addTodolist}/>
-                <Grid container spacing={3}>
-                    {todolists.map((todolist) => {
-                        return (
-                            <Todolist
-                                key={todolist.id}
-                                todolist={todolist}
-                                demo={demo}
-                            />
-                        );
-                    })}
-                </Grid>
+                <Outlet />
             </Container>
         </div>
     );

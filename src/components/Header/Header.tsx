@@ -1,23 +1,28 @@
 import {AppBar, Button, IconButton, LinearProgress, Toolbar, Typography} from '@mui/material';
 import {Menu} from '@mui/icons-material';
 import React from 'react';
-import {useSelector} from 'react-redux';
-import {AppRootStateType} from '../../state/store';
-import {RequestStatusType} from '../../state/app-reducer';
+import {useAppDispatch, useAppSelector} from '../../state/store';
+import {logOutTC} from '../../state/auth-reducer';
 
 
 export const Header = () => {
-    const status = useSelector<AppRootStateType, RequestStatusType>(state=> state.app.status)
+    const dispatch = useAppDispatch()
+    const status = useAppSelector(state => state.app.status)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+
+    const onLogOut = () => {
+        dispatch(logOutTC())
+    }
     return (
         <AppBar position="static">
-            <Toolbar>
+            <Toolbar style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                 <IconButton edge="start" color="inherit" aria-label="menu">
                     <Menu/>
                 </IconButton>
-                <Typography variant="h6">News</Typography>
-                <Button color="inherit">Login</Button>
+                <Typography variant="h6">Todolist</Typography>
+                {isLoggedIn && <Button color="inherit" onClick={onLogOut}>Log out</Button>}
             </Toolbar>
-            {status === 'loading' && <LinearProgress />}
+            {status === 'loading' && <LinearProgress/>}
         </AppBar>
     );
 };

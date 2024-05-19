@@ -51,16 +51,6 @@ export const fetchTodolistsTC = (): AppThunkType => (dispatch) => {
             handleServerNetworkError(error, dispatch)
         })
 }
-// export const _fetchTodolistsTC = (): AppThunkType => async dispatch => {
-//     dispatch(setAppStatusAC('loading'))
-//     try {
-//         const response = await todolistsApi.getTodolists()
-//         dispatch(setTodolistsAC(response.data))
-//         dispatch(setAppStatusAC('succeeded'))
-//     } catch (error) {
-//         handleServerNetworkError(error, dispatch)
-//     }
-// }
 export const removeTodolistTC = (todolistId: string): AppThunkType => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     dispatch(updateTodolistAC(todolistId, {entityStatus: 'loading'}))
