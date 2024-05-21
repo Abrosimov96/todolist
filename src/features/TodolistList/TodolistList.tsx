@@ -1,12 +1,12 @@
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Grid} from '@mui/material';
-import {Todolist} from '../Todolist/Todolist';
+import {Todolist} from './Todolist/Todolist';
 import React, {useCallback, useEffect} from 'react';
 import {addTodolistTC, fetchTodolistsTC} from '../../state/todolists-reducer';
 import {useAppDispatch, useAppSelector} from '../../state/store';
 import {useSelector} from 'react-redux';
 import {todolistSelector} from '../../state/selectors/todolistSelector';
-import {Navigate, useOutletContext} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 
 type TodolistListProps = {
     demo?: boolean

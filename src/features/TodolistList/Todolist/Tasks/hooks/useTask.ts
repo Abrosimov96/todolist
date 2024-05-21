@@ -1,7 +1,7 @@
-import {removeTaskTC, updateTaskTC} from '../../../state/tasks-reducer';
+import {removeTaskTC, updateTaskTC} from '../../../../../state/tasks-reducer';
 import {ChangeEvent, useCallback} from 'react';
-import {TaskStatuses} from '../../../api/task-api';
-import {useAppDispatch} from '../../../state/store';
+import {TaskStatuses} from '../../../../../api/task-api';
+import {useAppDispatch} from '../../../../../state/store';
 
 export const useTask = (todolistId: string, id: string) => {
     const dispatch = useAppDispatch()

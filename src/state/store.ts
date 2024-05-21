@@ -1,10 +1,11 @@
-import {AnyAction, applyMiddleware, combineReducers, compose, Dispatch, legacy_createStore} from 'redux';
-import {TodolistActionsType, todolistsReducer} from './todolists-reducer';
-import {TaskActionsType, tasksReducer} from './tasks-reducer';
-import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk'
+import {AnyAction, combineReducers} from 'redux';
+import {todolistsReducer} from './todolists-reducer';
+import {tasksReducer} from './tasks-reducer';
+import {ThunkAction} from 'redux-thunk'
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
-import {AppActionsType, appReducer} from './app-reducer';
-import {AuthActionType, authReducer} from './auth-reducer';
+import {appReducer} from './app-reducer';
+import {authReducer} from './auth-reducer';
+import {configureStore} from '@reduxjs/toolkit';
 
 export const rootReducer = combineReducers({
     todolists: todolistsReducer,
@@ -13,22 +14,19 @@ export const rootReducer = combineReducers({
     app: appReducer
 })
 
-export type AppRootStateType = ReturnType<typeof rootReducer>
-// eslint-disable-next-line
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export const store = configureStore({
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware => getDefaultMiddleware()
+})
 
+export type StoreType = typeof store.getState
 
-// @ts-ignore
-export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
+export type AppRootStateType = ReturnType<StoreType>
 
-export type AppThunkDispatch = ThunkDispatch<AppRootStateType, any, AnyAction>
-
-export const useAppDispatch = () => useDispatch<AppThunkDispatch>();
+export type AppThunkDispatch = typeof store.dispatch
+export const useAppDispatch: () => AppThunkDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
-export type AppThunkType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionType>
+export type AppThunkType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AnyAction>
 
-type AppActionType = AppActionsType | TaskActionsType | TodolistActionsType | AuthActionType
-
-export type RootDispatchActionType = Dispatch<AppActionType>
 // @ts-ignore
 window.store = store

@@ -1,18 +1,19 @@
 import {Button, Grid, IconButton, Paper,} from '@mui/material';
 import {Delete} from '@mui/icons-material';
-import {memo, useCallback, useEffect, useMemo} from 'react';
-import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
-import {EditableSpan} from '../../components/EditableSpan/EditableSpan';
-import {useAppDispatch, useAppSelector} from '../../state/store';
-import {addTaskTC, fetchTasksTC} from '../../state/tasks-reducer';
+import {memo, useCallback, useMemo} from 'react';
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
+import {useAppDispatch, useAppSelector} from '../../../state/store';
+import {addTaskTC} from '../../../state/tasks-reducer';
 import {
     changeTodolistTitleTC,
     FilterValuesType,
     removeTodolistTC,
-    TodolistType, updateTodolistAC
-} from '../../state/todolists-reducer';
-import {Task} from '../Tasks/Task';
-import {TaskStatuses, TaskType} from '../../api/task-api';
+    TodolistType,
+    updateTodolistAC
+} from '../../../state/todolists-reducer';
+import {Task} from './Tasks/Task';
+import {TaskStatuses, TaskType} from '../../../api/task-api';
 
 type PropsType = {
     todolist: TodolistType
@@ -26,19 +27,14 @@ export const Todolist = memo(({todolist, demo = false}: PropsType) => {
     const dispatch = useAppDispatch()
     const tasks = useAppSelector(store => store.tasks[id])
 
-    useEffect(() => {
-        if (!demo) {
-            dispatch(fetchTasksTC(id))
-        }
-    }, [dispatch, id, demo]);
-
 
     const addTask = useCallback((title: string) => {
         dispatch(addTaskTC(id, title))
     }, [dispatch, id]);
 
     const onClickFilter = useCallback((filter: FilterValuesType) => {
-        dispatch(updateTodolistAC(id, {filter}));
+        const newTodolist: TodolistType = {...todolist, filter: filter}
+        dispatch(updateTodolistAC({todolist: newTodolist, todolistId: id}));
     }, [dispatch, id]);
 
     const removeTodolist = useCallback(() => {
@@ -83,7 +79,7 @@ export const Todolist = memo(({todolist, demo = false}: PropsType) => {
                                 : <p style={{textAlign: 'center'}}>Task list is empty</p>
                         }
                     </div>
-                    <div style={{display:'flex', justifyContent: 'space-between'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
                         <Button
                             color="primary"
                             variant={filter === 'all' ? 'outlined' : 'text'}

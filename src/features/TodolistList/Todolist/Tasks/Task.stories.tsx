@@ -1,7 +1,7 @@
 import type {Meta} from '@storybook/react';
 import {Task} from './Task';
-import {ReduxStoreProviderDecorator} from '../../stories/ReduxStoreProviderDecorator';
-import {TaskPriorities, TaskStatuses} from '../../api/task-api';
+import {ReduxStoreProviderDecorator} from '../../../../stories/ReduxStoreProviderDecorator';
+import {TaskPriorities, TaskStatuses} from '../../../../api/task-api';
 
 const meta = {
     title: 'Task Component',

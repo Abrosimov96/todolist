@@ -8,6 +8,7 @@ import {TaskPriorities, TaskStatuses} from '../api/task-api';
 import {appReducer} from '../state/app-reducer';
 import thunk from 'redux-thunk';
 import {authReducer} from '../state/auth-reducer';
+import {HashRouter, MemoryRouter} from 'react-router-dom';
 
 
 const rootReducer = combineReducers({
@@ -123,8 +124,12 @@ export const storyBookStore = legacy_createStore(rootReducer, initialState, appl
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => {
     return <Provider store={store}>
-        {storyFn()}
+            {storyFn()}
     </Provider>
 }
-//@ts-ignore
-window.BStore = storyBookStore
+
+export const HashRouterStoreDecorator = (storyFn: any) => {
+    return <HashRouter>
+        {storyFn()}
+    </HashRouter>
+}
