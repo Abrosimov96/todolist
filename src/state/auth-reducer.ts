@@ -2,7 +2,7 @@ import {AppThunkType} from './store';
 import {setAppStatusAC} from './app-reducer';
 import {authAPI, LogInDataType} from '../api/auth-api';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
-import {clearTasksAndTodolistsAC} from './todolists-reducer';
+import {clearTasksAndTodolists} from './todolists-reducer';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 const initialState = {
@@ -44,7 +44,7 @@ export const logOutTC = (): AppThunkType => (dispatch) => {
             if (res.data.resultCode === 0) {
                 dispatch(logInAC({isLoggedIn: false}))
                 dispatch(setAppStatusAC({status: 'succeeded'}))
-                dispatch(clearTasksAndTodolistsAC())
+                dispatch(clearTasksAndTodolists())
             } else {
                 handleServerAppError(res.data, dispatch)
             }

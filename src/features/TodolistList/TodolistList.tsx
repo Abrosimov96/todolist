@@ -2,7 +2,7 @@ import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Grid} from '@mui/material';
 import {Todolist} from './Todolist/Todolist';
 import React, {useCallback, useEffect} from 'react';
-import {addTodolistTC, fetchTodolistsTC} from '../../state/todolists-reducer';
+import {addTodolistTC, fetchTodolistsTC, todolistsThunk} from '../../state/todolists-reducer';
 import {useAppDispatch, useAppSelector} from '../../state/store';
 import {useSelector} from 'react-redux';
 import {todolistSelector} from '../../state/selectors/todolistSelector';
@@ -21,7 +21,8 @@ export const TodolistList = ({demo = false}: TodolistListProps) => {
         if (!isLoggedIn) {
             return
         }
-        dispatch(fetchTodolistsTC())
+        // dispatch(fetchTodolistsTC())
+        dispatch(todolistsThunk.getTodolists())
     }, [dispatch, isLoggedIn])
 
     const addTodolist = useCallback((title: string) => {

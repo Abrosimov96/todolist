@@ -3,13 +3,13 @@ import {AppRootStateType, AppThunkType} from './store';
 import {RequestStatusType, setAppStatusAC} from './app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 import {
-    addTodolistAC,
-    clearTasksAndTodolistsAC,
-    removeTodolistAC,
-    setTodolistsAC,
-    TodolistType
+    addTodolist,
+    changeTodolistEntityStatus,
+    clearTasksAndTodolists,
+    removeTodolist,
+    setTodolists
 } from './todolists-reducer';
-import {createSlice, current, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {TodolistTypeAPI} from '../api/todolists-api';
 
 const initialState: TasksStateType = {}
@@ -48,18 +48,18 @@ const taskSlice = createSlice({
             if (indexTask > -1) state[action.payload.todolistId][indexTask].entityStatus = action.payload.status
         }
     },
-    extraReducers(builder) {
+    extraReducers:(builder) => {
         builder
-            .addCase(setTodolistsAC, (state, action) => {
+            .addCase(setTodolists, (state, action) => {
                 action.payload.todolists.forEach((t: TodolistTypeAPI) => state[t.id] = [])
             })
-            .addCase(removeTodolistAC, (state, action) => {
+            .addCase(removeTodolist, (state, action) => {
                 delete state[action.payload.todolistId];
             })
-            .addCase(addTodolistAC, (state, action) => {
+            .addCase(addTodolist, (state, action) => {
                 state[action.payload.todolist.id] = [];
             })
-            .addCase(clearTasksAndTodolistsAC, () => {
+            .addCase(clearTasksAndTodolists, () => {
                 return {}
             })
 
@@ -105,16 +105,20 @@ export const removeTaskTC = (todolistId: string, taskId: string): AppThunkType =
 }
 export const addTaskTC = (todolistId: string, title: string): AppThunkType => (dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
+    dispatch(changeTodolistEntityStatus({todolistId, status: 'loading'}))
     taskApi.createTask(todolistId, title)
         .then(res => {
             if (!res.data.resultCode) {
                 dispatch(addTaskAC({task: res.data.data.item}))
                 dispatch(setAppStatusAC({status: 'succeeded'}))
+                dispatch(changeTodolistEntityStatus({todolistId, status: 'succeeded'}))
             } else {
+                dispatch(changeTodolistEntityStatus({todolistId, status: 'failed'}))
                 handleServerAppError(res.data, dispatch)
             }
         })
         .catch((error) => {
+            dispatch(changeTodolistEntityStatus({todolistId, status: 'failed'}))
             handleServerNetworkError(error, dispatch)
         })
 }

@@ -10,7 +10,7 @@ import {
     FilterValuesType,
     removeTodolistTC,
     TodolistType,
-    updateTodolistAC
+    changeTodolistFilter
 } from '../../../state/todolists-reducer';
 import {Task} from './Tasks/Task';
 import {TaskStatuses, TaskType} from '../../../api/task-api';
@@ -33,8 +33,7 @@ export const Todolist = memo(({todolist, demo = false}: PropsType) => {
     }, [dispatch, id]);
 
     const onClickFilter = useCallback((filter: FilterValuesType) => {
-        const newTodolist: TodolistType = {...todolist, filter: filter}
-        dispatch(updateTodolistAC({todolist: newTodolist, todolistId: id}));
+        dispatch(changeTodolistFilter({todolistId: id, filter}));
     }, [dispatch, id]);
 
     const removeTodolist = useCallback(() => {
@@ -74,7 +73,7 @@ export const Todolist = memo(({todolist, demo = false}: PropsType) => {
                     <AddItemForm addItem={addTask} disabled={isLoading}/>
                     <div>
                         {
-                            filteredTasks.length > 0
+                            filteredTasks?.length > 0
                                 ? filteredTasks.map(task => <Task key={task.id} task={task} todolistId={id}/>)
                                 : <p style={{textAlign: 'center'}}>Task list is empty</p>
                         }
