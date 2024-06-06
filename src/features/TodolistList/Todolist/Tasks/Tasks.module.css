@@ -1,13 +1,13 @@
-.container{
+.container {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.isDone{
+.isDone {
     text-decoration: line-through;
 }
 
-.container:last-child{
+.container:last-child {
     margin-bottom: 20px;
 }
