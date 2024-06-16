@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react"
-import { todolistsApi, TodolistTypeAPI } from "features/TodolistList/todolists-api"
+import { todolistsApi } from "features/TodolistList/api/todolists-api"
+import { TodolistTypeApi } from "features/TodolistList/api/todolists.types"
 
 export default {
     title: "API_TODOLIST",
 }
 
 export const GetTodolists = () => {
-    const [state, setState] = useState<TodolistTypeAPI[]>([])
+    const [state, setState] = useState<TodolistTypeApi[]>([])
     useEffect(() => {
         todolistsApi.getTodolists().then((res) => {
             setState(res.data)

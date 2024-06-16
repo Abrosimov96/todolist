@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom"
 import App from "app/App"
 import { Login } from "features/auth/ui/Login"
-import { TodolistList } from "features/TodolistList/TodolistList"
+import { TodolistList } from "features/TodolistList/ui/TodolistList"
 import { ErrorPage } from "common/components/ErrorPage/ErrorPage"
 
 export const router = createBrowserRouter([

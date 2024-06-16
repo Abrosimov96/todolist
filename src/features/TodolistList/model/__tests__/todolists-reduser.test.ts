@@ -4,7 +4,7 @@ import {
     FilterValuesType,
     todolistsActions,
     todolistsThunk,
-} from "features/TodolistList/todolists-reducer"
+} from "features/TodolistList/model/todolists-reducer"
 import { ActionForTest, RequestStatusType } from "common/types"
 
 let startState: Array<TodolistType>
