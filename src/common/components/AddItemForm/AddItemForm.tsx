@@ -4,7 +4,7 @@ import { memo } from "react"
 import { useAddItemForm } from "common/components/AddItemForm/hooks/useAddItemForm"
 
 type AddItemFormPropsType = {
-    addItem: (title: string) => void
+    addItem: (title: string) => Promise<any>
     disabled?: boolean
 }
 

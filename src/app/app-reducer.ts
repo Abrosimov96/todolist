@@ -1,7 +1,6 @@
-import { authAPI } from "features/auth/api/auth-api"
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils"
+import { createSlice, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit"
 import { RequestStatusType } from "common/types"
+import { todolistsThunk } from "features/TodolistList/model/todolists-reducer"
 
 const initialState = {
     status: "idle",
@@ -19,11 +18,27 @@ const appSlice = createSlice({
         setAppErrorAC(state, action: PayloadAction<{ error: null | string }>) {
             state.error = action.payload.error
         },
+        setAppInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
+            state.isInitialized = action.payload.isInitialized
+        },
     },
     extraReducers: (builder) => {
-        builder.addCase(initializeApp.fulfilled, (state, action) => {
-            state.isInitialized = action.payload.isInitialized
-        })
+        builder
+            .addMatcher(isPending, (state) => {
+                state.status = "loading"
+            })
+            .addMatcher(isFulfilled, (state) => {
+                state.status = "succeeded"
+            })
+            .addMatcher(isRejected, (state, action: any) => {
+                state.status = "failed"
+                if (action.payload) {
+                    if (action.type === todolistsThunk.addTodolist.rejected.type) return
+                    state.error = action.payload.messages[0]
+                } else {
+                    state.error = action.error.message ? action.error.message : "Some error occurred"
+                }
+            })
     },
     selectors: {
         selectAppStatus: (sliceState) => sliceState.status,
@@ -32,26 +47,6 @@ const appSlice = createSlice({
     },
 })
 
-export const initializeApp = createAppAsyncThunk<{ isAuthorized: boolean; isInitialized: boolean }, void>(
-    `${appSlice.name}/initializeApp`,
-    async (arg, thunkAPI) => {
-        const { dispatch, rejectWithValue } = thunkAPI
-        try {
-            const res = await authAPI.me()
-            if (res.data.resultCode === 0) {
-                return { isAuthorized: true, isInitialized: true }
-            } else {
-                handleServerAppError(res.data, dispatch)
-                return rejectWithValue(null)
-            }
-        } catch (error) {
-            handleServerNetworkError(error, dispatch)
-            return rejectWithValue(null)
-        }
-    },
-)
-
 export const appReducer = appSlice.reducer
 export const appActions = appSlice.actions
 export const { selectAppStatus, selectAppError, selectAppIsInitialized } = appSlice.selectors
-export const appThunks = { initializeApp }

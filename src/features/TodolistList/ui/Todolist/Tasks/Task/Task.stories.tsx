@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react"
-import { Task } from "./Task"
+import { Task } from "features/TodolistList/ui/Todolist/Tasks/Task/Task"
 import { ReduxStoreProviderDecorator } from "stories/ReduxStoreProviderDecorator"
 import { TaskPriorities, TaskStatuses } from "common/enums/enums"
 
@@ -26,7 +26,6 @@ export const TaskBaseExample = () => {
                     todoListId: "todolistId1",
                     entityStatus: "idle",
                 }}
-                todolistId={"1"}
             />
             <Task
                 task={{
@@ -42,7 +41,6 @@ export const TaskBaseExample = () => {
                     todoListId: "todolistId1",
                     entityStatus: "idle",
                 }}
-                todolistId={"1"}
             />
         </>
     )
@@ -65,7 +63,6 @@ export const TaskDisabled = () => {
                     todoListId: "todolistId1",
                     entityStatus: "loading",
                 }}
-                todolistId={"1"}
             />
             <Task
                 task={{
@@ -81,7 +78,6 @@ export const TaskDisabled = () => {
                     todoListId: "todolistId1",
                     entityStatus: "idle",
                 }}
-                todolistId={"1"}
             />
         </>
     )

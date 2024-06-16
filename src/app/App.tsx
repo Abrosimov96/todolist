@@ -4,9 +4,10 @@ import "./App.css"
 import { Header } from "common/components/Header/Header"
 import { ErrorSnackbar } from "common/components/ErrorSnacknar/ErrorSnackbar"
 import { Outlet } from "react-router-dom"
-import { appThunks, selectAppIsInitialized } from "app/app-reducer"
+import { selectAppIsInitialized } from "app/app-reducer"
 import { useSelector } from "react-redux"
-import { useAppDispatch } from "common/hooks"
+import { useActions } from "common/hooks"
+import { authThunks } from "features/auth/model/auth-reducer"
 
 type AppProps = {
     demo?: boolean
@@ -14,11 +15,11 @@ type AppProps = {
 
 function App({ demo = false }: AppProps) {
     const isInitialized = useSelector(selectAppIsInitialized)
-    const dispatch = useAppDispatch()
+    const { initializeApp } = useActions(authThunks)
 
     useEffect(() => {
-        dispatch(appThunks.initializeApp())
-    }, [dispatch])
+        initializeApp()
+    }, [])
 
     if (!isInitialized) {
         return (

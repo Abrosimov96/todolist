@@ -1,6 +1,7 @@
 import React, { useState } from "react"
-import { taskApi, UpdateTaskModelType } from "features/TodolistList/Todolist/Tasks/task-api"
+import { taskApi } from "features/TodolistList/api/task-api"
 import { TaskPriorities, TaskStatuses } from "common/enums/enums"
+import { UpdateTaskModelType } from "features/TodolistList/api/tasks.types"
 
 export default {
     title: "API_ASK",
@@ -29,36 +30,36 @@ export const GetTask = () => {
     )
 }
 
-export const CreateTasks = () => {
-    const [state, setState] = useState<any>(null)
-    const [inputValueID, setInputValueID] = useState<string>("")
-    const [inputValue, setInputValue] = useState<string>("")
-
-    function createTask() {
-        taskApi.createTask(inputValueID, inputValue).then((res) => {
-            setState(res.data)
-        })
-    }
-
-    return (
-        <div>
-            {JSON.stringify(state)}
-            <div>
-                <input
-                    placeholder={"Todolist id..."}
-                    value={inputValueID}
-                    onChange={(e) => setInputValueID(e.currentTarget.value)}
-                />
-                <input
-                    placeholder={"Todolist title..."}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.currentTarget.value)}
-                />
-                <button onClick={createTask}>Create Task</button>
-            </div>
-        </div>
-    )
-}
+// export const CreateTasks = () => {
+//     const [state, setState] = useState<any>(null)
+//     const [inputValueID, setInputValueID] = useState<string>("")
+//     const [inputValue, setInputValue] = useState<string>("")
+//
+//     function createTask() {
+//         taskApi.createTask(inputValueID, inputValue).then((res) => {
+//             setState(res.data)
+//         })
+//     }
+//
+//     return (
+//         <div>
+//             {JSON.stringify(state)}
+//             <div>
+//                 <input
+//                     placeholder={"Todolist id..."}
+//                     value={inputValueID}
+//                     onChange={(e) => setInputValueID(e.currentTarget.value)}
+//                 />
+//                 <input
+//                     placeholder={"Todolist title..."}
+//                     value={inputValue}
+//                     onChange={(e) => setInputValue(e.currentTarget.value)}
+//                 />
+//                 <button onClick={createTask}>Create Task</button>
+//             </div>
+//         </div>
+//     )
+// }
 
 export const DeleteTask = () => {
     const [state, setState] = useState<any>(null)

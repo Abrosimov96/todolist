@@ -1,10 +1,5 @@
-import {
-    tasksAction,
-    tasksReducer,
-    TasksStateType,
-    tasksThunks,
-} from "features/TodolistList/Todolist/Tasks/tasks-reducer"
-import { todolistsThunk } from "features/TodolistList/todolists-reducer"
+import { tasksAction, tasksReducer, TasksStateType, tasksThunks } from "features/TodolistList/model/tasks-reducer"
+import { todolistsThunk } from "features/TodolistList/model/todolists-reducer"
 import { TaskPriorities, TaskStatuses } from "common/enums/enums"
 import { ActionForTest, RequestStatusType } from "common/types"
 
